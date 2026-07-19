@@ -1,0 +1,41 @@
+{
+  "admin": {
+    "auth_url": "https://api.us.printix.net/v1/tenants",
+    "tenant": "cpatest",
+    "tenant_id": "62889165-a207-4951-a789-d83a5a3a5a98",
+    "network_name": "Kofax_Dev",
+    "ip": "192.168.2.10",
+    "mac": "*",
+    "network_id": "f9c67645-a078-4ba8-bd18-0439426d52e2",
+    "admin_username": "0kofax.dev.adm@gmail.com",
+    "admin_pass": "Kofax2022",
+    "token_url": "https://api.us.printix.net/v1/enumerations",
+    "response_type": "code",
+    "client_id": "admin",
+    "client_secret": "thehouseisonfire",
+    "redirect_uri": "https://cpatest.us.printix.net",
+    "grant_type": "authorization_code",
+    "environment": "prodenv.us",
+    "auth_token_url": "https://auth.us.printix.net/oauth/authorize/tenant/cpatest.us.printix.net?response_type=code&client_id=admin&client_secret=thehouseisonfire&redirect_uri=https://cpatest.us.printix.net",
+    "email_to": "0kofax.dev.adm@gmail.com",
+    "email_cc": "ramesh.kunamneni@printix.net",
+    "workflow_name": "KofaxQATest",
+    "workflow_id": "e5f538a3-1e7b-4a47-9eca-30558e995aa8",
+    "group_id": "a2e13667-855e-49f6-818c-3fe712e8f269",
+    "cp_auth_token_url": "https://auth.us.printix.net/oauth/token",
+    "cp_url": "https://api.us.printix.net/cloudprint/",
+    "cp_grant_type": "client_credentials",
+    "cp_client_id": "f1274690-2416-45d0-a5fd-b43724109de8",
+    "cp_client_secret": "YwOPmBb8IUdnCyOpRU08WPQCyK3OqxzRL6cojCni954ybcuh",
+    "InvalidSessionBeforeJWT": "eyJhbGciOiJIUzI1NiJ9.eyJ0ZW5hbnRJRCI6ImM1N2JjMjlhLTJkOTktNDNkMi04YjZhLWRiNWIwYzY1YWMyNiIsImlzcyI6InByaW50aXgiLCJleHAiOjE2NzY1ODE3MjAsImlhdCI6MTY3NjU4MTEyMCwiY2xpZW50X2lkIjoiYWRtaW4iLCJTUFJJTkdfU0VDVVJJVFlfU0FWRURfUkVRVUVTVCI6eyJyZXF1ZXN0VXJsIjoiaHR0cHM6Ly9hdXRoLmRldmVudi5wcmludGl4Lm5ldDo0NDMvb2F1dGgvYXV0aG9yaXplL3RlbmFudC93ZWJ0ZXN0LmRldmVudi5wcmludGl4Lm5ldD9yZXNwb25zZV90eXBlPWNvZGUmY2xpZW50X2lkPWFkbWluJmNsaWVudF9zZWNyZXQ9dGhlaG91c2Vpc29uZmlyZSZyZWRpcmVjdF91cmk9aHR0cHMlM0ElMkYlMkZ3ZWJ0ZXN0LmRldmVudi5wcmludGl4Lm5ldCUyRmFkbWluJTJGJTIzJTJGZGFzaGJvYXJkIiwicXVlcnlTdHJpbmciOiJyZXNwb25zZV90eXBlPWNvZGUmY2xpZW50X2lkPWFkbWluJmNsaWVudF9zZWNyZXQ9dGhlaG91c2Vpc29uZmlyZSZyZWRpcmVjdF91cmk9aHR0cHMlM0ElMkYlMkZ3ZWJ0ZXN0LmRldmVudi5wcmludGl4Lm5ldCUyRmFkbWluJTJGJTIzJTJGZGFzaGJvYXJkIn19.8Y-yJO5DURwZPQyyY1cvBbPWYVh0_GnFomFxwAUCWtk",
+    "validButExpiredSessionBeforeCredentials": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcmludGl4IiwiZXhwIjoxNjc2NTQ3NDQ0LCJpYXQiOjE2NzY1NDY4NDQsIlNQUklOR19TRUNVUklUWV9TQVZFRF9SRVFVRVNUIjp7InJlcXVlc3RVcmwiOiJodHRwczpcL1wvYXV0aC5kZXZlbnYucHJpbnRpeC5uZXQ6NDQzXC9vYXV0aFwvYXV0aG9yaXplXC90ZW5hbnRcL21pc3NpbmcuZGV2ZW52LnByaW50aXgubmV0P3Jlc3BvbnNlX3R5cGU9Y29kZSZjbGllbnRfaWQ9YWRtaW4mY2xpZW50X3NlY3JldD10aGVob3VzZWlzb25maXJlJnJlZGlyZWN0X3VyaT1odHRwczpcL1wvbWlzc2luZy5kZXZlbnYucHJpbnRpeC5uZXQiLCJxdWVyeVN0cmluZyI6InJlc3BvbnNlX3R5cGU9Y29kZSZjbGllbnRfaWQ9YWRtaW4mY2xpZW50X3NlY3JldD10aGVob3VzZWlzb25maXJlJnJlZGlyZWN0X3VyaT1odHRwczpcL1wvbWlzc2luZy5kZXZlbnYucHJpbnRpeC5uZXQifX0.H38Shwgr7CQkE-sLeSooXFkpS-mExfo20o8BqEWwl20",
+    "temp_tenant": "printcloudapitesting"
+  },
+  "partner": {
+
+  },
+  "release": {
+
+  }
+
+}

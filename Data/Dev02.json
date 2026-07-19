@@ -1,0 +1,42 @@
+{
+  "admin": {
+    "auth_url": "https://api.dev02.printix.dev/v1/tenants",
+    "tenant": "cpapitest",
+    "tenant_id": "afcba489-d1a7-4728-8963-cd0669372167",
+    "network_name": "Kofax_Dev",
+    "ip": "192.168.1.1",
+    "mac": "*",
+    "network_id": "2e4c273d-6240-4184-b659-dde8a7cf106e",
+    "admin_username": "0kofax.dev.adm@gmail.com",
+    "admin_pass": "Kofax2022",
+    "token_url": "https://api.dev02.printix.dev/v1/enumerations",
+    "response_type": "code",
+    "client_id": "admin",
+    "client_secret": "thehouseisonfire",
+    "redirect_uri": "https://cpapitest.dev02.printix.dev",
+    "grant_type": "authorization_code",
+    "environment": "dev02",
+    "auth_token_url": "https://auth.dev02.printix.dev/oauth/authorize/tenant/cpapitest.dev02.printix.dev?response_type=code&client_id=admin&client_secret=thehouseisonfire&redirect_uri=https://cpapitest.dev02.printix.dev",
+    "email_to": "0kofax.dev.adm@gmail.com",
+    "email_cc": "ramesh.kunamneni@printix.net",
+    "workflow_name": "KofaxQATest",
+    "workflow_id": "e4b2731d-db64-4389-b425-76ee219ca427",
+    "group_id": "a2e13667-855e-49f6-818c-3fe712e8f269",
+    "cp_auth_token_url": "https://auth.dev02.printix.dev/oauth/token",
+    "cp_url": "https://api.dev02.printix.dev/cloudprint/",
+    "cp_grant_type": "client_credentials",
+    "cp_client_id": "982a7fdd-3266-42a0-b0ce-26ba4d832551",
+    "cp_client_secret": "sIbeVdDSkGRiaz1UzuhYEFv6OTSxCTs5sCkyeBCX4240JWXH",
+    "InvalidSessionBeforeJWT": "eyJhbGciOiJIUzI1NiJ9.eyJ0ZW5hbnRJRCI6ImM1N2JjMjlhLTJkOTktNDNkMi04YjZhLWRiNWIwYzY1YWMyNiIsImlzcyI6InByaW50aXgiLCJleHAiOjE2NzY1ODE3MjAsImlhdCI6MTY3NjU4MTEyMCwiY2xpZW50X2lkIjoiYWRtaW4iLCJTUFJJTkdfU0VDVVJJVFlfU0FWRURfUkVRVUVTVCI6eyJyZXF1ZXN0VXJsIjoiaHR0cHM6Ly9hdXRoLmRldmVudi5wcmludGl4Lm5ldDo0NDMvb2F1dGgvYXV0aG9yaXplL3RlbmFudC93ZWJ0ZXN0LmRldmVudi5wcmludGl4Lm5ldD9yZXNwb25zZV90eXBlPWNvZGUmY2xpZW50X2lkPWFkbWluJmNsaWVudF9zZWNyZXQ9dGhlaG91c2Vpc29uZmlyZSZyZWRpcmVjdF91cmk9aHR0cHMlM0ElMkYlMkZ3ZWJ0ZXN0LmRldmVudi5wcmludGl4Lm5ldCUyRmFkbWluJTJGJTIzJTJGZGFzaGJvYXJkIiwicXVlcnlTdHJpbmciOiJyZXNwb25zZV90eXBlPWNvZGUmY2xpZW50X2lkPWFkbWluJmNsaWVudF9zZWNyZXQ9dGhlaG91c2Vpc29uZmlyZSZyZWRpcmVjdF91cmk9aHR0cHMlM0ElMkYlMkZ3ZWJ0ZXN0LmRldmVudi5wcmludGl4Lm5ldCUyRmFkbWluJTJGJTIzJTJGZGFzaGJvYXJkIn19.8Y-yJO5DURwZPQyyY1cvBbPWYVh0_GnFomFxwAUCWtk",
+    "validButExpiredSessionBeforeCredentials": "eyJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJwcmludGl4IiwiZXhwIjoxNjc2NTQ3NDQ0LCJpYXQiOjE2NzY1NDY4NDQsIlNQUklOR19TRUNVUklUWV9TQVZFRF9SRVFVRVNUIjp7InJlcXVlc3RVcmwiOiJodHRwczpcL1wvYXV0aC5kZXZlbnYucHJpbnRpeC5uZXQ6NDQzXC9vYXV0aFwvYXV0aG9yaXplXC90ZW5hbnRcL21pc3NpbmcuZGV2ZW52LnByaW50aXgubmV0P3Jlc3BvbnNlX3R5cGU9Y29kZSZjbGllbnRfaWQ9YWRtaW4mY2xpZW50X3NlY3JldD10aGVob3VzZWlzb25maXJlJnJlZGlyZWN0X3VyaT1odHRwczpcL1wvbWlzc2luZy5kZXZlbnYucHJpbnRpeC5uZXQiLCJxdWVyeVN0cmluZyI6InJlc3BvbnNlX3R5cGU9Y29kZSZjbGllbnRfaWQ9YWRtaW4mY2xpZW50X3NlY3JldD10aGVob3VzZWlzb25maXJlJnJlZGlyZWN0X3VyaT1odHRwczpcL1wvbWlzc2luZy5kZXZlbnYucHJpbnRpeC5uZXQifX0.H38Shwgr7CQkE-sLeSooXFkpS-mExfo20o8BqEWwl20",
+    "temp_tenant": "kofax-budapest"
+
+  },
+  "partner": {
+
+  },
+  "release": {
+
+  }
+
+}
