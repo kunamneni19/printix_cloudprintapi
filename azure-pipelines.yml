@@ -1,0 +1,153 @@
+schedules:
+- cron: "0 11 * * 1-5"
+  displayName: Weekdays at 11:00 AM (UTC)
+  branches:
+    include:
+      - master
+  always: true
+
+trigger:
+  branches:
+    include:
+      - master
+      - develop*
+  tags:
+    include:
+      - GA-Printix*
+  paths:
+    include:
+      - CloudPrintAPI/*
+      - ExternalAPITEST/*
+      - APITest.sln
+      - APITest.Utils/*
+
+parameters:
+  - name: environment
+    displayName: 'Environment'
+    type: string
+    default: 'testenv'
+    values:
+      - 'devenv'
+      - 'testenv'
+      - 'prodenv'
+      - 'devenv.us'
+      - 'testenv.us'
+      - 'prodenv.us'
+      - 'dev01'
+      - 'dev02'
+      - 'dev03'
+      - 'dev04'
+  - name: test_category
+    displayName: 'Test Category'
+    type: string
+    default: 'regression'
+    values:
+      - 'smoke'
+      - 'regression'
+      - 'release'
+
+pool:
+  name: "PrintixServerAutomation"
+  demands: Agent.Name -equals KOFAXBP-TENANT-
+  concurrency: 5
+
+variables:
+  dotnetSdkVersion: '7.x'
+  BuildConfiguration: 'Debug'
+  system.debug: true
+
+jobs:
+- job: RunTests
+  displayName: 'Printix API Automation: ${{ parameters.environment }}:${{ parameters.test_category }}'
+  timeoutInMinutes: 120
+  continueOnError: true
+
+  steps:
+    - task: UseDotNet@2
+      displayName: 'Install .NET SDK'
+      inputs:
+        version: '$(dotnetSdkVersion)'
+
+    - task: NuGetToolInstaller@1
+      displayName: 'Install NuGet'
+      inputs:
+        versionSpec: '6.x'
+
+    - script: |
+        dotnet restore "$(Build.SourcesDirectory)/APITest.sln"
+      displayName: 'Restore NuGet packages'
+
+    - script: |
+        dotnet build "$(Build.SourcesDirectory)/APITest.sln" --configuration $(BuildConfiguration)
+      displayName: 'Build the Solution'
+
+    - task: CopyFiles@2
+      displayName: 'Copy Utils Data Files to CloudPrintAPI bin folder'
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)/APITest.Utils/Data'
+        Contents: '**/*.json'
+        TargetFolder: '$(Build.SourcesDirectory)/CloudPrintAPI/bin/$(BuildConfiguration)/net$(dotnetSdkVersion)/Data'
+
+    - task: CopyFiles@2
+      displayName: 'Copy Utils Data Files to ExternalAPITEST bin folder'
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)/APITest.Utils/Data'
+        Contents: '**/*.json'
+        TargetFolder: '$(Build.SourcesDirectory)/ExternalAPITEST/bin/$(BuildConfiguration)/net$(dotnetSdkVersion)/Data'
+
+    - task: PowerShell@2
+      displayName: 'Clear Build Artifacts'
+      inputs:
+        targetType: 'inline'
+        script: |
+          if (Test-Path "$(Build.SourcesDirectory)/Reports") {
+              Remove-Item -Path "$(Build.SourcesDirectory)/Reports" -Recurse -Force
+          }
+
+    # Run tests separately per project with unique trx files
+    - script: |
+        echo "Running CloudPrintAPI Tests"
+        dotnet test "$(Build.SourcesDirectory)/CloudPrintAPI/CloudPrintAPI.csproj" --filter "TestCategory=${{ parameters.test_category }}" --logger "trx;LogFileName=CloudPrintAPI_${{ parameters.test_category }}_results_$(Build.BuildNumber).trx" --results-directory "$(Build.SourcesDirectory)/Reports"
+      displayName: 'Run CloudPrintAPI Tests'
+      env:
+        Environment: ${{ parameters.environment }}
+        Test_category: ${{ parameters.test_category }}
+
+    - script: |
+        echo "Running ExternalAPITEST Tests"
+        dotnet test "$(Build.SourcesDirectory)/ExternalAPITEST/ExternalAPI.csproj" --filter "TestCategory=${{ parameters.test_category }}" --logger "trx;LogFileName=ExternalAPITEST_${{ parameters.test_category }}_results_$(Build.BuildNumber).trx" --results-directory "$(Build.SourcesDirectory)/Reports"
+      displayName: 'Run ExternalAPITEST Tests'
+      env:
+        Environment: ${{ parameters.environment }}
+        Test_category: ${{ parameters.test_category }}
+
+    - task: PowerShell@2
+      displayName: 'Create Automation Reports Folder'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $targetFolder = "$(Agent.HomeDirectory)/Automation Reports"
+          if (-not (Test-Path -Path $targetFolder)) {
+            New-Item -ItemType Directory -Path $targetFolder
+          }
+      condition: always()
+
+    - task: PublishTestResults@2
+      displayName: 'Publish Combined Test Results'
+      inputs:
+        testResultsFormat: 'VSTest'
+        testResultsFiles: '**/*.trx'
+        searchFolder: '$(Build.SourcesDirectory)/Reports'
+        mergeTestResults: true
+        testRunTitle: 'Report-Build $(Build.BuildNumber)-${{ parameters.test_category }}-${{ parameters.environment }}'
+        publishRunAttachments: true
+        failTaskOnFailedTests: false
+      condition: always()
+
+    - task: CopyFiles@2
+      displayName: 'Copy Test Report to agent/ Automation Reports'
+      inputs:
+        SourceFolder: '$(Build.SourcesDirectory)/Reports'
+        Contents: '**/*'
+        TargetFolder: '$(Agent.HomeDirectory)/Automation Reports'
+      condition: always()
