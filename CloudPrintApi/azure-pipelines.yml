@@ -1,0 +1,141 @@
+schedules:
+- cron: "0 11 * * 1-5"
+  displayName: Weekdays at 11:00 AM (UTC)
+  branches:
+    include:
+      - master
+  always: true
+  
+trigger:
+  branches:
+    include:
+      - master
+      - develop*
+  tags:
+    include:
+      - GA-Printix*
+  paths:
+    include:
+      - PrintixAutomation/CloudPrintAPI/*
+parameters:
+  - name: environment
+    displayName: 'Environment'
+    type: string
+    default: 'testenv'
+    values:
+      - 'devenv'
+      - 'testenv'
+      - 'prodenv'
+      - 'devenv.us'
+      - 'testenv.us'
+      - 'prodenv.us'
+      - 'dev01'
+      - 'dev02' 
+      - 'dev03'
+      - 'dev04' 
+  - name: test_category
+    displayName: 'Test Category'
+    type: string
+    default: 'regression'
+    values:
+      - 'smoke'
+      - 'regression'
+      - 'release'
+ 
+pool:
+  name: "PrintixServerAutomation"                              
+  demands: Agent.Name -equals KOFAXBP-TENANT-           ##devenv2-jenkins   ##LENOVO-WIN11  
+  concurrency: 5
+  
+variables:
+  dotnetSdkVersion: '7.x'
+  mstestAdapterVersion: '3.0.2'
+  mstestFrameworkVersion: '3.0.2'
+  restSharpVersion: '110.2.0'
+  system.debug: true  
+
+jobs:
+- job: RunTests
+  displayName: 'CloudPrintAPI Automation: ${{ parameters.environment }}:${{ parameters.test_category }}'
+  timeoutInMinutes: 120
+  continueOnError: true
+
+  steps:
+   - task: PowerShell@2
+     displayName: 'Clear Build Artifacts'
+     inputs:
+        targetType: 'inline'
+        script: |
+            if (Test-Path "$(Build.SourcesDirectory)/CloudPrintAPI/Reports") {
+                Remove-Item -Path "$(Build.SourcesDirectory)/CloudPrintAPI/Reports" -Recurse -Force
+            }  
+   - task: UseDotNet@2
+     displayName: 'Install .NET SDK'
+     inputs:
+      version: '$(dotnetSdkVersion)'
+
+   - task: NuGetToolInstaller@1
+     displayName: 'Install NuGet'
+     inputs:
+      versionSpec: '6.x'
+   - task: CmdLine@2
+     displayName: 'Install MSTest Adapter'
+     inputs:
+      script: 'nuget install MSTest.TestAdapter -Version $(mstestAdapterVersion) -OutputDirectory $(Build.ArtifactStagingDirectory)\packages -NonInteractive'
+
+   - task: CmdLine@2
+     displayName: 'Install MSTest Framework'
+     inputs:
+       script: 'nuget install MSTest.TestFramework -Version $(mstestFrameworkVersion) -OutputDirectory $(Build.ArtifactStagingDirectory)\packages -NonInteractive'
+   
+   - task: NuGetCommand@2
+     displayName: 'Install RestSharp Package'
+     inputs:
+      command: 'custom'
+      arguments: 'install RestSharp -Version $(restSharpVersion) -OutputDirectory $(Build.ArtifactStagingDirectory)\packages -NonInteractive'
+      feedType: 'external'
+
+   - script: |
+      echo "Test Environment: ${{ parameters.environment }}"
+      echo "Test Category: ${{ parameters.test_category }}"
+      cd "$(Build.SourcesDirectory)/CloudPrintAPI"
+      dotnet test --filter "TestCategory=${{ parameters.test_category }}" --logger "trx;LogFileName=PrintixCloudPrintAPIAutomation_${{ parameters.test_category }}_results_$(Build.BuildNumber).trx" --logger "console;verbosity=normal" --results-directory "$(Build.SourcesDirectory)/CloudPrintAPI/Reports" 
+     displayName: 'Tests:${{ parameters.environment }}:${{ parameters.test_category }}'
+     env:
+      Environment: ${{ parameters.environment }}
+      Test_category: ${{ parameters.test_category }}
+ 
+   - task: PowerShell@2
+     displayName: 'CloudPrintAPI Automation Reports Folder'
+     inputs:
+       targetType: 'inline'
+       script: |
+         $targetFolder = "$(Agent.HomeDirectory)/Automation Reports"
+         if (-not (Test-Path -Path $targetFolder)) {
+            New-Item -ItemType Directory -Path $targetFolder
+         }
+     condition: always() 
+    
+      
+   - task: PublishTestResults@2
+     displayName: 'Test Results'
+     inputs:
+       testResultsFormat: 'VSTest'
+       testResultsFiles: '**/*.trx'
+       searchFolder: '$(Build.SourcesDirectory)/CloudPrintAPI/Reports'
+       mergeTestResults: true
+       testRunTitle: 'Report-Build $(Build.BuildNumber)-${{ parameters.test_category }}-${{ parameters.environment }}'
+       publishRunAttachments: true
+       testRunAttachments: '$(Build.SourcesDirectory)/CloudPrintAPI/Reports/pie_chart.png'
+       failTaskOnFailedTests: false  
+     condition: always() 
+
+   - task: CopyFiles@2
+     displayName: 'Copy Test Report to agent/ Automation Reports'
+     inputs:
+       SourceFolder: '$(Build.SourcesDirectory)/CloudPrintAPI/Reports'
+       Contents: '**/*'
+       TargetFolder: '$(Agent.HomeDirectory)/Automation Reports'
+     condition: always()
+
+  
